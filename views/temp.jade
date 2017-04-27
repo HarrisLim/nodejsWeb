@@ -1,0 +1,10 @@
+html
+	head
+		title= _title
+	body
+		h1 hello Jade
+		ul
+			-for(var i=0; i<5; i++)
+				li coding
+		//-	이 타임은 temp를 불러오는 js파일에서 미리 선언해줘야함.
+		div= time 
