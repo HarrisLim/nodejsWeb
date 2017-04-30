@@ -1,0 +1,22 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+	body
+		h1
+			a(href='/topic') Server Side Javascript
+
+		ul
+			each topic in topics
+				li 
+					//- href를 사용하여 link를 만들고 = 뒤에 있는 변수(topic)을 가져온다.
+					a(href='/topic/'+topic)= topic 
+		//- article은 글의 본문이라는 뜻.
+		article 
+			form(action='/topic' method="post")
+				p
+					input(type='text' name='title' placeholder='title')
+				p
+					textarea(name='description')
+				p
+					input(type='submit')

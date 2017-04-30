@@ -1,0 +1,21 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+	body
+		h1
+			a(href='/topic') Server Side Javascript
+
+		ul
+			each topic in topics
+				li 
+					//- href를 사용하여 link를 만들고 = 뒤에 있는 변수(topic)을 가져온다.
+					a(href='/topic/'+topic)= topic 
+		//- article은 글의 본문이라는 뜻.
+		article 
+			h2= title
+			//- 본문에 선택한 파일 안에 있는 것에 주는 것. 
+			= description 
+		div
+			//- new 링크를 만들어서 만들 수 있게 함.
+			a(href='/topic/new') new 
