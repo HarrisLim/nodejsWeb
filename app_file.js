@@ -1,11 +1,30 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var multer = require('multer');
+var _storage = multer.diskStorage({
+	destination: function (req, file, cb){
+		// if(파일의 형식이 이미지면) <- 이런 식으로 조건을 줄 수 있다.
+		cb(null, 'uploads/');
+	},
+	filename: function (req, file, cb) {
+		cb(null, file.originalname);
+	}
+});
+var upload = multer({ storage : _storage}); // dest는 destination의 줄임말 // storage로 하고 위의 _storage함수를 실행시키면서 원래의 파일네임(originalname)을 가져온다.
 var fs = require('fs'); // 이것은 파일시스템. 파일을 건드리려면 추가해야함.(node.js가 기본적으로 제공하는 모듈)
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.locals.pretty = true;
+app.use('/user', express.static('uploads')); // user/xxx.xx이렇게 uploads에 있는 파일과 확장자명을 url에 쓰면 그 페이지가 켜진다.
 app.set('views', './views_file');
 app.set('view engine', 'jade'); // express에게 jade를 사용한다고 알려준다.
+app.get('/upload', function(req,res){ // /upload에 파일 올리기.
+	res.render('upload');
+});
+app.post('/upload', upload.single('userfile'), function(req,res){ // /upload에 파일 올린 것을 Uploaded로 확인하기. // upload.single(2번째 인자)란, 뒤에 있는 function이 실행되기 전에 이것이 먼저 실행됨. (미들웨어), upload.jade의 input name과 single(xxx)의 xxx가 같아야 함.
+	console.log(req.file);
+	res.send('Uploaded: '+req.file.filename); // 이렇게 화면에 filename을 입력시킬 수 있음. 
+});
 app.get('/topic/new', function(req, res){
 	fs.readdir('data',function(err,files){
 		if(err){	
