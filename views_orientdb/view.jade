@@ -1,0 +1,39 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+	body
+		h1
+			a(href='/topic') Server Side Javascript
+
+		ul
+			each topic in topics
+				li 
+					// jade에서 - 뒤에 붙이는 것은 javascript로 인식한다.
+					- rid = encodeURIComponent(topic['@rid'])
+					//- href를 사용하여 link를 만들고 = 뒤에 있는 변수(topic)을 가져온다., orientdb에서 .@rid라고 작성하면 잘 이해못해서 []로 묶어줘서 사용한 것.
+					a(href='/topic/'+rid)= topic.title
+		//- article은 글의 본문이라는 뜻.
+		article 
+			if topic
+				h2= topic.title
+				//- 본문에 선택한 파일 안에 있는 것에 주는 것. 
+				= topic.description 
+				div= 'by '+topic.author
+			else
+				//- 신핸은행 main홈페이지 같은 느낌. 제목을 누르면 뜨는 것.
+				h2 Welcome
+				| This is server side javascript tutorial.
+				//- new 링크를 만들어서 만들 수 있게 함.
+			ul
+				li
+					a(href='/topic/add') add
+				//- 홈으로 들어갔을 때 edit버튼을 안보이게 하기 위해.
+				if topic
+					- rid = encodeURIComponent(topic['@rid'])
+					li
+						a(href='/topic/'+rid+'/edit') edit
+					li
+						a(href='/topic/'+rid+'/delete') delete
+					
+

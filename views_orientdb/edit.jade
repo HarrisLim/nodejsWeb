@@ -1,0 +1,28 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+	body
+		h1
+			a(href='/topic') Server Side Javascript
+		ul
+			each topic in topics
+				li 
+					// jade에서 - 뒤에 붙이는 것은 javascript로 인식한다.
+					- rid = encodeURIComponent(topic['@rid'])
+					//- href를 사용하여 link를 만들고 = 뒤에 있는 변수(topic)을 가져온다., orientdb에서 .@rid라고 작성하면 잘 이해못해서 []로 묶어줘서 사용한 것.
+					a(href='/topic/'+rid)= topic.title
+		//- article은 글의 본문이라는 뜻.
+		article
+			- rid = encodeURIComponent(topic['@rid'])
+			form(action='/topic/'+rid+'/add' method='post')
+				p
+					input(type='text' name='title' placeholder='title' value=topic.title)
+				p
+					//- input과 textarea의 값을 읽어올때 value와 =으로 넣은 차이를 알아야해.
+					textarea(name='description' placeholder='description')
+						=topic.description
+				p
+					input(type='text' name='author' placeholder='author' value=topic.author)
+				p
+					input(type='submit')
